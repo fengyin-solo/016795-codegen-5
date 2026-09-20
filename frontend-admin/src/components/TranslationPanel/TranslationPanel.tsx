@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Send, Languages, History, Copy, Check } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import { Button } from '@/components/ui';
-import { MAX_INPUT_LENGTH, LANGUAGES } from '@/utils/constants';
+import { MAX_INPUT_LENGTH } from '@/utils/constants';
 import { formatTime, getLanguageDisplayName } from '@/utils/helpers';
 
 // 检测文本是否主要是指定语言
@@ -195,8 +195,8 @@ export const TranslationPanel: React.FC = () => {
         <div>
           <h2 className="text-lg font-semibold text-dark-100">文本翻译</h2>
           <p className="text-xs text-dark-500">
-            {getLanguageDisplayName(sourceLang, LANGUAGES)} →{' '}
-            {getLanguageDisplayName(targetLang, LANGUAGES)}
+            {getLanguageDisplayName(sourceLang)} →{' '}
+            {getLanguageDisplayName(targetLang)}
           </p>
         </div>
       </div>

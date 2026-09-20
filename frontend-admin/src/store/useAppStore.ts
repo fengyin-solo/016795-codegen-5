@@ -5,14 +5,25 @@ import { DEFAULT_AUDIO_SETTINGS, TOAST_DURATION } from '@/utils/constants';
 
 const STORAGE_KEY = 'subtitle-translator-session-records';
 
+// 解析存储的时间戳：正常写入的是 ISO 字符串；null/缺失等损坏值统一视为无效时间，
+// 避免 new Date(null) 被强转为 1970 纪元，导致重新打开页面后显示变样
+// （无效时间由展示层统一以占位符显示）
+const parseStoredTimestamp = (value: unknown): Date => {
+  if (typeof value !== 'string' && typeof value !== 'number') {
+    return new Date(NaN);
+  }
+  return new Date(value);
+};
+
 const loadRecordsFromStorage = (): SessionRecord[] => {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       const parsed = JSON.parse(stored);
+      if (!Array.isArray(parsed)) return [];
       return parsed.map((r: SessionRecord) => ({
         ...r,
-        timestamp: new Date(r.timestamp),
+        timestamp: parseStoredTimestamp(r.timestamp),
       }));
     }
   } catch {

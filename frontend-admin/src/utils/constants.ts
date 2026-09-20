@@ -13,6 +13,9 @@ export const DEFAULT_AUDIO_SETTINGS = {
 
 export const MAX_INPUT_LENGTH = 500;
 
+// 长文本在列表/字幕区的统一截断长度（字幕区与会话记录必须使用同一个值）
+export const MAX_DISPLAY_TEXT_LENGTH = 60;
+
 export const TOAST_DURATION = 3000;
 
 // 模拟字幕数据

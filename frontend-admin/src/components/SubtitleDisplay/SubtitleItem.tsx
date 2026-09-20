@@ -1,6 +1,7 @@
 import React from 'react';
 import type { SubtitleEntry } from '@/types';
-import { formatTime } from '@/utils/helpers';
+import { formatTime, truncateText } from '@/utils/helpers';
+import { MAX_DISPLAY_TEXT_LENGTH } from '@/utils/constants';
 
 interface SubtitleItemProps {
   subtitle: SubtitleEntry;
@@ -20,26 +21,28 @@ export const SubtitleItem: React.FC<SubtitleItemProps> = ({ subtitle }) => {
           {formatTime(subtitle.timestamp)}
         </div>
 
-        {/* 字幕内容 */}
+        {/* 字幕内容（与会话记录共用同一截断口径，title 保留完整原文） */}
         <div className="flex-1 space-y-2">
           {/* 原文 */}
           <p
+            title={subtitle.originalText}
             className={`
               text-lg leading-relaxed
               ${subtitle.isActive ? 'text-dark-50 font-medium' : 'text-dark-200'}
             `}
           >
-            {subtitle.originalText}
+            {truncateText(subtitle.originalText, MAX_DISPLAY_TEXT_LENGTH)}
           </p>
 
           {/* 译文 */}
           <p
+            title={subtitle.translatedText}
             className={`
               text-base leading-relaxed
               ${subtitle.isActive ? 'text-primary-400' : 'text-dark-400'}
             `}
           >
-            {subtitle.translatedText}
+            {truncateText(subtitle.translatedText, MAX_DISPLAY_TEXT_LENGTH)}
           </p>
         </div>
 
