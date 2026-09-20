@@ -12,6 +12,7 @@ export const DEFAULT_AUDIO_SETTINGS = {
 };
 
 export const MAX_INPUT_LENGTH = 500;
+export const MAX_DISPLAY_TEXT_LENGTH = 60;
 
 export const TOAST_DURATION = 3000;
 

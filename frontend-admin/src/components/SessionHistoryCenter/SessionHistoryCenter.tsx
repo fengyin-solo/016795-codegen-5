@@ -15,8 +15,7 @@ import {
 } from 'lucide-react';
 import { useAppStore } from '@/store/useAppStore';
 import { Button } from '@/components/ui';
-import { LANGUAGES } from '@/utils/constants';
-import { formatTime, getLanguageDisplayName, truncateText } from '@/utils/helpers';
+import { formatDate, formatDateTime, formatTime, getLanguageDisplayName, truncateText } from '@/utils/helpers';
 import type { SessionRecord, SessionRecordType } from '@/types';
 
 type FilterType = 'all' | SessionRecordType;
@@ -47,12 +46,7 @@ export const SessionHistoryCenter: React.FC<{ onClose: () => void }> = ({ onClos
   const groupedByDate = useMemo(() => {
     const groups: Record<string, SessionRecord[]> = {};
     filteredRecords.forEach(record => {
-      const date = record.timestamp.toLocaleDateString('zh-CN', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long',
-      });
+      const date = formatDate(record.timestamp);
       if (!groups[date]) {
         groups[date] = [];
       }
@@ -256,14 +250,14 @@ export const SessionHistoryCenter: React.FC<{ onClose: () => void }> = ({ onClos
                                   {formatTime(record.timestamp)}
                                 </span>
                                 <span className="text-xs text-dark-600">
-                                  {getLanguageDisplayName(record.sourceLang, LANGUAGES)} → {getLanguageDisplayName(record.targetLang, LANGUAGES)}
+                                  {getLanguageDisplayName(record.sourceLang)} → {getLanguageDisplayName(record.targetLang)}
                                 </span>
                               </div>
-                              <p className="text-sm text-dark-300 truncate mb-1">
-                                {truncateText(record.sourceText, 60)}
+                              <p className="text-sm text-dark-300 break-words mb-1">
+                                {truncateText(record.sourceText)}
                               </p>
-                              <p className="text-sm text-dark-100 truncate">
-                                {truncateText(record.targetText, 60)}
+                              <p className="text-sm text-dark-100 break-words">
+                                {truncateText(record.targetText)}
                               </p>
                             </div>
                             <button
@@ -308,19 +302,11 @@ export const SessionHistoryCenter: React.FC<{ onClose: () => void }> = ({ onClos
                 <div className="text-sm text-dark-400 space-y-1">
                   <p className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
-                    {selectedRecord.timestamp.toLocaleString('zh-CN', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      weekday: 'long',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      second: '2-digit',
-                    })}
+                    {formatDateTime(selectedRecord.timestamp)}
                   </p>
                   <p className="flex items-center gap-2">
                     <Languages className="w-4 h-4" />
-                    {getLanguageDisplayName(selectedRecord.sourceLang, LANGUAGES)} → {getLanguageDisplayName(selectedRecord.targetLang, LANGUAGES)}
+                    {getLanguageDisplayName(selectedRecord.sourceLang)} → {getLanguageDisplayName(selectedRecord.targetLang)}
                   </p>
                 </div>
 
@@ -414,19 +400,11 @@ export const SessionHistoryCenter: React.FC<{ onClose: () => void }> = ({ onClos
               <div className="text-sm text-dark-400 space-y-1">
                 <p className="flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
-                  {selectedRecord.timestamp.toLocaleString('zh-CN', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    weekday: 'long',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit',
-                  })}
+                  {formatDateTime(selectedRecord.timestamp)}
                 </p>
                 <p className="flex items-center gap-2">
                   <Languages className="w-4 h-4" />
-                  {getLanguageDisplayName(selectedRecord.sourceLang, LANGUAGES)} → {getLanguageDisplayName(selectedRecord.targetLang, LANGUAGES)}
+                  {getLanguageDisplayName(selectedRecord.sourceLang)} → {getLanguageDisplayName(selectedRecord.targetLang)}
                 </p>
               </div>
 

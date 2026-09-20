@@ -77,6 +77,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   
   addSubtitle: (original: string, translated: string) => {
     const { sourceLang, targetLang } = get();
+    const timestamp = new Date();
     set(state => ({
       subtitles: [
         ...state.subtitles.map(s => ({ ...s, isActive: false })),
@@ -84,7 +85,7 @@ export const useAppStore = create<AppState>((set, get) => ({
           id: generateId(),
           originalText: original,
           translatedText: translated,
-          timestamp: new Date(),
+          timestamp,
           isActive: true,
         },
       ],
@@ -96,6 +97,7 @@ export const useAppStore = create<AppState>((set, get) => ({
       targetText: translated,
       sourceLang,
       targetLang,
+      timestamp,
     });
   },
   
@@ -121,7 +123,8 @@ export const useAppStore = create<AppState>((set, get) => ({
       // 模拟翻译
       await new Promise(resolve => setTimeout(resolve, 800));
       const result = `[Translated] ${inputText}`;
-      
+      const timestamp = new Date();
+
       set(state => ({
         translationHistory: [
           {
@@ -130,20 +133,21 @@ export const useAppStore = create<AppState>((set, get) => ({
             targetText: result,
             sourceLang,
             targetLang,
-            timestamp: new Date(),
+            timestamp,
           },
           ...state.translationHistory,
         ],
         inputText: '',
         isTranslating: false,
       }));
-      
+
       addSessionRecord({
         type: 'manual',
         sourceText: inputText,
         targetText: result,
         sourceLang,
         targetLang,
+        timestamp,
       });
       
       addToast('success', '翻译完成');
@@ -171,11 +175,11 @@ export const useAppStore = create<AppState>((set, get) => ({
     }));
   },
   
-  addSessionRecord: (record) => {
+  addSessionRecord: ({ timestamp, ...record }) => {
     set(state => {
       const newRecord: SessionRecord = {
         id: generateId(),
-        timestamp: new Date(),
+        timestamp: timestamp ?? new Date(),
         ...record,
       };
       const newRecords = [newRecord, ...state.sessionRecords];

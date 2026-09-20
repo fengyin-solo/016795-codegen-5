@@ -103,7 +103,7 @@ export interface AppState {
   translate: () => Promise<void>;
   addToast: (type: ToastType, message: string) => void;
   removeToast: (id: string) => void;
-  addSessionRecord: (record: Omit<SessionRecord, 'id' | 'timestamp'>) => void;
+  addSessionRecord: (record: Omit<SessionRecord, 'id' | 'timestamp'> & { timestamp?: Date }) => void;
   deleteSessionRecord: (id: string) => void;
   clearSessionRecords: () => void;
 }

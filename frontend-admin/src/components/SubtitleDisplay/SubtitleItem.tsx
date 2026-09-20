@@ -1,6 +1,6 @@
 import React from 'react';
 import type { SubtitleEntry } from '@/types';
-import { formatTime } from '@/utils/helpers';
+import { formatTime, truncateText } from '@/utils/helpers';
 
 interface SubtitleItemProps {
   subtitle: SubtitleEntry;
@@ -25,21 +25,21 @@ export const SubtitleItem: React.FC<SubtitleItemProps> = ({ subtitle }) => {
           {/* 原文 */}
           <p
             className={`
-              text-lg leading-relaxed
+              text-lg leading-relaxed break-words
               ${subtitle.isActive ? 'text-dark-50 font-medium' : 'text-dark-200'}
             `}
           >
-            {subtitle.originalText}
+            {truncateText(subtitle.originalText)}
           </p>
 
           {/* 译文 */}
           <p
             className={`
-              text-base leading-relaxed
+              text-base leading-relaxed break-words
               ${subtitle.isActive ? 'text-primary-400' : 'text-dark-400'}
             `}
           >
-            {subtitle.translatedText}
+            {truncateText(subtitle.translatedText)}
           </p>
         </div>
 
